@@ -13,18 +13,17 @@ namespace Chessington.GameEngine.Pieces
         {
             var resultList = new List<Square>();
             var currentSquare = board.FindPiece(this);
-            int moveBy;
             switch(Player)
             {
                 case Player.White:
-                    if (currentSquare.Row.Equals(7))
+                    if (!this.MovedBefore)
                     {
                         resultList.Add(new Square(currentSquare.Row - 2, currentSquare.Col));
                     }
                     resultList.Add(new Square(currentSquare.Row - 1, currentSquare.Col));
                     break;
                 case Player.Black:
-                    if (currentSquare.Row.Equals(1))
+                    if (!this.MovedBefore)
                     {
                         resultList.Add(new Square(currentSquare.Row + 2, currentSquare.Col));
                     }

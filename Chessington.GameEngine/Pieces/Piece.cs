@@ -6,6 +6,8 @@ namespace Chessington.GameEngine.Pieces
 {
     public abstract class Piece
     {
+        public bool MovedBefore = false;
+
         protected Piece(Player player)
         {
             Player = player;
@@ -17,6 +19,7 @@ namespace Chessington.GameEngine.Pieces
 
         public void MoveTo(Board board, Square newSquare)
         {
+            MovedBefore = true;
             var currentSquare = board.FindPiece(this);
             board.MovePiece(currentSquare, newSquare);
         }
