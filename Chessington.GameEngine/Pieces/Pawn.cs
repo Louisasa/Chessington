@@ -6,8 +6,11 @@ namespace Chessington.GameEngine.Pieces
 {
     public class Pawn : Piece
     {
-        public Pawn(Player player) 
-            : base(player) { }
+        public Pawn(Player player)
+            : base(player)
+        {
+            this.PieceName = "pawn";
+        }
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
@@ -16,11 +19,11 @@ namespace Chessington.GameEngine.Pieces
             switch(Player)
             {
                 case Player.White:
-                    resultList = FindAllMoves(currentSquare, -1);
+                    resultList = FindAllMoves(currentSquare, -1, board);
 
                     break;
                 case Player.Black:
-                    resultList = FindAllMoves(currentSquare, 1);
+                    resultList = FindAllMoves(currentSquare, 1, board);
 
                     break;
                 default:
@@ -30,21 +33,22 @@ namespace Chessington.GameEngine.Pieces
             return resultList;
         }
 
-        private List<Square> FindAllMoves(Square currentSquare, int positiveOrNegativeMoves)
+        private List<Square> FindAllMoves(Square currentSquare, int positiveOrNegativeMoves, Board board)
         {
             var resultList = new List<Square>();
-            if (!this.MovedBefore)
-            {
-                if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(2 * positiveOrNegativeMoves, 0)))
-                {
-                    resultList.Add(OneMove(currentSquare, new Tuple<int, int>(2 * positiveOrNegativeMoves, 0)));
-                }
-            }
+            var moveOneTuple = new Tuple<int, int>(1 * positiveOrNegativeMoves, 0);
+            if (!IsMoveInGameBoardRange(currentSquare, moveOneTuple) ||
+                !NoPieceInSquare(currentSquare, moveOneTuple, board)) return resultList;
 
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1 * positiveOrNegativeMoves, 0)))
-            {
-                resultList.Add(OneMove(currentSquare, new Tuple<int, int>(1 * positiveOrNegativeMoves, 0)));
-            }
+            resultList.Add(OneMove(currentSquare, moveOneTuple));
+
+            if (this.MovedBefore) return resultList;
+
+            var moveTwoTuple = new Tuple<int, int>(2 * positiveOrNegativeMoves, 0);
+            if (!IsMoveInGameBoardRange(currentSquare, moveTwoTuple) ||
+                !NoPieceInSquare(currentSquare, moveTwoTuple, board)) return resultList;
+
+            resultList.Add(OneMove(currentSquare, moveTwoTuple));
 
             return resultList;
         }

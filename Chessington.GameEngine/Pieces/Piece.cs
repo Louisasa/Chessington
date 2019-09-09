@@ -7,6 +7,7 @@ namespace Chessington.GameEngine.Pieces
     public abstract class Piece
     {
         public bool MovedBefore = false;
+        public string PieceName;
 
         protected Piece(Player player)
         {
@@ -50,6 +51,13 @@ namespace Chessington.GameEngine.Pieces
         {
             return currentSquare.Row + stepIncrease.Item1 < GameSettings.BoardSize && currentSquare.Row + stepIncrease.Item1 >= 0 &&
                    currentSquare.Col + stepIncrease.Item2 < GameSettings.BoardSize && currentSquare.Col + stepIncrease.Item2 >= 0;
+        }
+
+        public static bool NoPieceInSquare(Square currentSquare, Tuple<int, int> stepIncrease, Board board)
+        {
+            var piece = board.GetPiece(new Square(currentSquare.Row + stepIncrease.Item1,
+                currentSquare.Col + stepIncrease.Item2));
+            return piece == null;
         }
     }
 }

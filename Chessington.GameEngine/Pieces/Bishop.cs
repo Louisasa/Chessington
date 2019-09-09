@@ -7,7 +7,10 @@ namespace Chessington.GameEngine.Pieces
     public class Bishop : Piece
     {
         public Bishop(Player player)
-            : base(player) { }
+            : base(player)
+        {
+            this.PieceName = "bishop";
+        }
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
