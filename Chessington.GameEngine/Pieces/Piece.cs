@@ -30,13 +30,13 @@ namespace Chessington.GameEngine.Pieces
             return new Square(currentSquare.Row + stepIncrease.Item1, currentSquare.Col + stepIncrease.Item2);
         }
 
-        public List<Square> MultipleMovesInOneDirection(Square currentSquare, Tuple<int, int> stepIncrease) 
+        public List<Square> MultipleMovesInOneDirection(Square currentSquare, Tuple<int, int> stepIncrease, Board board) 
         {
             var resultList = new List<Square>();
 
             var rowSteps = stepIncrease.Item1;
             var colSteps = stepIncrease.Item2;
-            while (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>( rowSteps, colSteps)))
+            while (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>( rowSteps, colSteps)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board ))
             {
                 var oneMoveResult = this.OneMove(currentSquare, new Tuple<int, int>(rowSteps, colSteps));
                 resultList.Add(oneMoveResult);
