@@ -11,26 +11,39 @@ namespace Chessington.GameEngine.Pieces
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
-            var resultList = new List<Square>();
+            List<Square> resultList;
             var currentSquare = board.FindPiece(this);
             switch(Player)
             {
                 case Player.White:
-                    if (!this.MovedBefore)
-                    {
-                        resultList.Add(new Square(currentSquare.Row - 2, currentSquare.Col));
-                    }
-                    resultList.Add(new Square(currentSquare.Row - 1, currentSquare.Col));
+                    resultList = FindAllMoves(currentSquare, -1);
+
                     break;
                 case Player.Black:
-                    if (!this.MovedBefore)
-                    {
-                        resultList.Add(new Square(currentSquare.Row + 2, currentSquare.Col));
-                    }
-                    resultList.Add(new Square(currentSquare.Row + 1, currentSquare.Col));
+                    resultList = FindAllMoves(currentSquare, 1);
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+
+            return resultList;
+        }
+
+        private List<Square> FindAllMoves(Square currentSquare, int positiveOrNegativeMoves)
+        {
+            var resultList = new List<Square>();
+            if (!this.MovedBefore)
+            {
+                if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(2 * positiveOrNegativeMoves, 0)))
+                {
+                    resultList.Add(OneMove(currentSquare, new Tuple<int, int>(2 * positiveOrNegativeMoves, 0)));
+                }
+            }
+
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1 * positiveOrNegativeMoves, 0)))
+            {
+                resultList.Add(OneMove(currentSquare, new Tuple<int, int>(1 * positiveOrNegativeMoves, 0)));
             }
 
             return resultList;
