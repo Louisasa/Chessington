@@ -15,29 +15,29 @@ namespace Chessington.GameEngine.Pieces
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
             var currentSquare = board.FindPiece(this);
-            var resultList = CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(2, 1));
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-2, 1)))
+            var resultList = CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(2, 1), board);
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-2, 1), board))
                 .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(2, -1)))
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(2, -1), board))
                 .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-2, -1)))
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-2, -1), board))
                 .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, 2)))
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, 2), board))
                 .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, -2)))
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, -2), board))
                 .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, 2)))
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, 2), board))
                 .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, -2)))
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, -2), board))
                 .ToList();
 
             return resultList;
         }
 
-        private List<Square> CheckAndGetAvailableMove(Square currentSquare, Tuple<int, int> moveTuple)
+        private List<Square> CheckAndGetAvailableMove(Square currentSquare, Tuple<int, int> moveTuple, Board board)
         {
             var resultList = new List<Square>();
-            if (IsMoveInGameBoardRange(currentSquare, moveTuple))
+            if (IsMoveInGameBoardRange(currentSquare, moveTuple) && SquareEmptyOrOpposingPieceInSquare(currentSquare, moveTuple, board))
             {
                 resultList.Add(OneMove(currentSquare, moveTuple));
             }

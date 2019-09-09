@@ -17,41 +17,34 @@ namespace Chessington.GameEngine.Pieces
             var currentSquare = board.FindPiece(this);
             var availableMoves = new List<Square>();
 
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, 1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(1, 1), board))
+            var resultList = CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, 1), board);
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, 1), board))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, -1), board))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, -1), board))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, 0), board))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, 0), board))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(0, 1), board))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(0, -1), board))
+                .ToList();
+
+            return resultList;
+        }
+
+        private List<Square> CheckAndGetAvailableMove(Square currentSquare, Tuple<int, int> moveTuple, Board board)
+        {
+            var resultList = new List<Square>();
+            if (IsMoveInGameBoardRange(currentSquare, moveTuple) && SquareEmptyOrOpposingPieceInSquare(currentSquare, moveTuple, board))
             {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(1, 1)));
-            }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, 1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(-1, 1), board))
-            {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(-1, 1)));
-            }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, -1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(1, -1), board))
-            {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(1, -1)));
-            }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, -1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(-1, -1), board))
-            {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(-1, -1)));
+                resultList.Add(OneMove(currentSquare, moveTuple));
             }
 
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, 0)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(1, 0), board))
-            {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(1, 0)));
-            }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(0, 1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(0, 1), board))
-            {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(0, 1)));
-            }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(0, -1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(0, -1), board))
-            {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(0, -1)));
-            }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, 0)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(-1, 0), board))
-            {
-                availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(-1, 0)));
-            }
-
-            return availableMoves;
+            return resultList;
         }
     }
 }
