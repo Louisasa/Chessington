@@ -37,14 +37,14 @@ namespace Chessington.GameEngine.Pieces
         {
             var resultList = new List<Square>();
             var moveOneTuple = new Tuple<int, int>(1 * positiveOrNegativeMoves, 0);
-            if (IsMoveInGameBoardRange(currentSquare, moveOneTuple) && NoPieceInSquare(currentSquare, moveOneTuple, board))
+            if (IsMoveInGameBoardRange(currentSquare, moveOneTuple) && SquareEmptyOrOpposingPieceInSquare(currentSquare, moveOneTuple, board))
             {
                 resultList.Add(OneMove(currentSquare, moveOneTuple));
 
                 if (!this.MovedBefore)
                 {
                     var moveTwoTuple = new Tuple<int, int>(2 * positiveOrNegativeMoves, 0);
-                    if (IsMoveInGameBoardRange(currentSquare, moveTwoTuple) && NoPieceInSquare(currentSquare, moveTwoTuple, board))
+                    if (IsMoveInGameBoardRange(currentSquare, moveTwoTuple) && SquareEmptyOrOpposingPieceInSquare(currentSquare, moveTwoTuple, board))
                     {
                         resultList.Add(OneMove(currentSquare, moveTwoTuple));
                     }

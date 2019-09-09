@@ -17,36 +17,36 @@ namespace Chessington.GameEngine.Pieces
             var currentSquare = board.FindPiece(this);
             var availableMoves = new List<Square>();
 
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, 1)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(1, 1), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, 1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(1, 1), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(1, 1)));
             }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, 1)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(-1, 1), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, 1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(-1, 1), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(-1, 1)));
             }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, -1)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(1, -1), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, -1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(1, -1), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(1, -1)));
             }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, -1)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(-1, -1), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, -1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(-1, -1), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(-1, -1)));
             }
 
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, 0)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(1, 0), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(1, 0)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(1, 0), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(1, 0)));
             }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(0, 1)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(0, 1), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(0, 1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(0, 1), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(0, 1)));
             }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(0, -1)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(0, -1), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(0, -1)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(0, -1), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(0, -1)));
             }
-            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, 0)) && NoPieceInSquare(currentSquare, new Tuple<int, int>(-1, 0), board))
+            if (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(-1, 0)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(-1, 0), board))
             {
                 availableMoves.Add(OneMove(currentSquare, new Tuple<int, int>(-1, 0)));
             }
