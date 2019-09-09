@@ -11,21 +11,30 @@ namespace Chessington.GameEngine.Pieces
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
+            var resultList = new List<Square>();
             var currentSquare = board.FindPiece(this);
             int moveBy;
             switch(Player)
             {
                 case Player.White:
-                    moveBy = -1;
+                    if (currentSquare.Row.Equals(7))
+                    {
+                        resultList.Add(new Square(currentSquare.Row - 2, currentSquare.Col));
+                    }
+                    resultList.Add(new Square(currentSquare.Row - 1, currentSquare.Col));
                     break;
                 case Player.Black:
-                    moveBy = 1;
+                    if (currentSquare.Row.Equals(1))
+                    {
+                        resultList.Add(new Square(currentSquare.Row + 2, currentSquare.Col));
+                    }
+                    resultList.Add(new Square(currentSquare.Row + 1, currentSquare.Col));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            var newSquare = new Square(currentSquare.Row + moveBy, currentSquare.Col);
-            return new List<Square> { newSquare };
+
+            return resultList;
         }
     }
 }
