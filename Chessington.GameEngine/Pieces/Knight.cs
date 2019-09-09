@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Chessington.GameEngine.Pieces
@@ -10,7 +11,35 @@ namespace Chessington.GameEngine.Pieces
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
-            return Enumerable.Empty<Square>();
+            var currentSquare = board.FindPiece(this);
+            var resultList = CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(2, 1));
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-2, 1)))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(2, -1)))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-2, -1)))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, 2)))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, -2)))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, 2)))
+                .ToList();
+            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, -2)))
+                .ToList();
+
+            return resultList;
+        }
+
+        private List<Square> CheckAndGetAvailableMove(Square currentSquare, Tuple<int, int> moveTuple)
+        {
+            var resultList = new List<Square>();
+            if (IsMoveInGameBoardRange(currentSquare, moveTuple))
+            {
+                resultList.Add(OneMove(currentSquare, moveTuple));
+            }
+
+            return resultList;
         }
     }
 }
