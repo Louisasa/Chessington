@@ -9,39 +9,32 @@ namespace Chessington.GameEngine.Pieces
         public King(Player player)
             : base(player)
         {
-            this.PieceName = "king";
         }
+
+        protected List<StepIncrease> Directions { get; } = new List<StepIncrease>
+        {
+            new StepIncrease(1, 1),
+            new StepIncrease(-1, 1),
+            new StepIncrease(1, -1),
+            new StepIncrease(-1, -1),
+            new StepIncrease(1, 0),
+            new StepIncrease(-1, 0),
+            new StepIncrease(0, 1),
+            new StepIncrease(0, -1)
+        };
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
             var currentSquare = board.FindPiece(this);
-            var availableMoves = new List<Square>();
-
-            var resultList = CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, 1), board);
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, 1), board))
-                .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, -1), board))
-                .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, -1), board))
-                .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(1, 0), board))
-                .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(-1, 0), board))
-                .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(0, 1), board))
-                .ToList();
-            resultList = resultList.Concat(CheckAndGetAvailableMove(currentSquare, new Tuple<int, int>(0, -1), board))
-                .ToList();
-
-            return resultList;
+            return Directions.SelectMany(direction => CheckAndGetAvailableMove(currentSquare, direction, board));
         }
 
-        private List<Square> CheckAndGetAvailableMove(Square currentSquare, Tuple<int, int> moveTuple, Board board)
+        private IEnumerable<Square> CheckAndGetAvailableMove(Square currentSquare, StepIncrease stepIncrease, Board board)
         {
             var resultList = new List<Square>();
-            if (IsMoveInGameBoardRange(currentSquare, moveTuple) && (SquareEmpty(currentSquare, moveTuple, board) || OpposingPieceInSquare(currentSquare, moveTuple, board)))
+            if (IsMoveInGameBoardRange(currentSquare + stepIncrease) && (SquareEmpty(currentSquare + stepIncrease, board) || OpposingPieceInSquare(currentSquare + stepIncrease, board)))
             {
-                resultList.Add(OneMove(currentSquare, moveTuple));
+                resultList.Add(currentSquare + stepIncrease);
             }
 
             return resultList;

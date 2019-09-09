@@ -9,7 +9,50 @@ namespace Chessington.GameEngine.Pieces
         public Pawn(Player player)
             : base(player)
         {
-            this.PieceName = "pawn";
+        }
+
+        protected StepIncrease OneStepDirections()
+        {
+            if (this.Player == Player.Black)
+            {
+                return new StepIncrease(1, 0);
+            }
+            else
+            {
+                return new StepIncrease(-1, 0);
+            }
+        }
+
+        protected StepIncrease TwoStepDirections()
+        {
+            if (this.Player == Player.Black)
+            {
+                return new StepIncrease(2, 0);
+            }
+            else
+            {
+                return new StepIncrease(-2, 0);
+            }
+        }
+
+        protected List<StepIncrease> OpposingPieceDirections()
+        {
+            if (this.Player == Player.Black)
+            {
+                return new List<StepIncrease>
+                {
+                    new StepIncrease(1, 1),
+                    new StepIncrease(1, -1)
+                };
+            }
+            else
+            {
+                return new List<StepIncrease>
+                {
+                    new StepIncrease(-1, 1),
+                    new StepIncrease(-1, -1)
+                };
+            }
         }
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
@@ -36,27 +79,35 @@ namespace Chessington.GameEngine.Pieces
         private List<Square> FindAllMoves(Square currentSquare, int positiveOrNegativeMoves, Board board)
         {
             var resultList = new List<Square>();
-            var moveOneTuple = new Tuple<int, int>(1 * positiveOrNegativeMoves, 0);
-            if (IsMoveInGameBoardRange(currentSquare, moveOneTuple) && SquareEmpty(currentSquare, moveOneTuple, board))
+            var moveOne = OneStepDirections();
+
+            if (IsMoveInGameBoardRange(currentSquare + moveOne) &&
+                SquareEmpty(currentSquare + moveOne, board))
             {
-                resultList.Add(OneMove(currentSquare, moveOneTuple));
+                resultList.Add(currentSquare + moveOne);
 
                 if (!this.MovedBefore)
                 {
-                    var moveTwoTuple = new Tuple<int, int>(2 * positiveOrNegativeMoves, 0);
-                    if (IsMoveInGameBoardRange(currentSquare, moveTwoTuple) && SquareEmpty(currentSquare, moveTwoTuple, board))
+                    var moveTwo = TwoStepDirections();
+                    if(IsMoveInGameBoardRange(currentSquare + moveTwo) &&
+                      SquareEmpty(currentSquare + moveTwo, board))
                     {
-                        resultList.Add(OneMove(currentSquare, moveTwoTuple));
+                        resultList.Add(currentSquare + moveTwo);
                     }
+                }
+            }
+
+            var toTakeMoves = OpposingPieceDirections();
+            foreach (var direction in toTakeMoves)
+            {
+                if (IsMoveInGameBoardRange(currentSquare + direction) &&
+                    OpposingPieceInSquare(currentSquare + direction, board))
+                {
+                    resultList.Add(currentSquare + direction);
                 }
             }
 
             return resultList;
         }
-
-        /*private bool PieceToTake(Square currentSquare, int positiveOrNegativeMove, int leftOrRight, Board board)
-        {
-            //todo:check left/right isn't out of bounds
-        }*/
     }
 }

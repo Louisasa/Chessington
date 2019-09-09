@@ -25,55 +25,51 @@ namespace Chessington.GameEngine.Pieces
             board.MovePiece(currentSquare, newSquare);
         }
 
-        public Square OneMove(Square currentSquare, Tuple<int, int> stepIncrease)
-        {
-            return new Square(currentSquare.Row + stepIncrease.Item1, currentSquare.Col + stepIncrease.Item2);
-        }
-
-        public List<Square> MultipleMovesInOneDirection(Square currentSquare, Tuple<int, int> stepIncrease, Board board) 
+        public List<Square> MultipleMovesInOneDirection(Square currentSquare, StepIncrease stepIncrease, Board board) 
         {
             var resultList = new List<Square>();
+            Square newSquare = currentSquare + stepIncrease;
 
-            var rowSteps = stepIncrease.Item1;
-            var colSteps = stepIncrease.Item2;
-            while (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(rowSteps, colSteps)) &&
-                   (SquareEmpty(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board) ||
-                    OpposingPieceInSquare(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board)))
+            while (IsMoveInGameBoardRange(newSquare) &&
+                   (SquareEmpty(newSquare, board) ||
+                    OpposingPieceInSquare(newSquare, board)))
             {
-                var oneMoveResult = this.OneMove(currentSquare, new Tuple<int, int>(rowSteps, colSteps));
-                resultList.Add(oneMoveResult);
-                if (OpposingPieceInSquare(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board ))
+                resultList.Add(newSquare);
+                if (OpposingPieceInSquare(newSquare, board ))
                 {
                     break;
                 }
 
-                rowSteps += stepIncrease.Item1;
-                colSteps += stepIncrease.Item2;
+                newSquare +=  stepIncrease;
             }
 
             return resultList;
         }
 
-        public static bool IsMoveInGameBoardRange(Square currentSquare, Tuple<int, int> stepIncrease)
+        public static bool IsMoveInGameBoardRange(Square newSquare)
         {
-            return currentSquare.Row + stepIncrease.Item1 < GameSettings.BoardSize && currentSquare.Row + stepIncrease.Item1 >= 0 &&
-                   currentSquare.Col + stepIncrease.Item2 < GameSettings.BoardSize && currentSquare.Col + stepIncrease.Item2 >= 0;
+            return newSquare.Row < GameSettings.BoardSize && newSquare.Row >= 0 &&
+                   newSquare.Col < GameSettings.BoardSize && newSquare.Col >= 0;
         }
 
-        public static bool SquareEmpty(Square currentSquare, Tuple<int, int> stepIncrease, Board board)
+        public static bool SquareEmpty(Square newSquare, Board board)
         {
-            var piece = board.GetPiece(new Square(currentSquare.Row + stepIncrease.Item1,
-                currentSquare.Col + stepIncrease.Item2));
+            var piece = board.GetPiece(newSquare);
             return piece == null;
         }
 
-        public static bool OpposingPieceInSquare(Square currentSquare, Tuple<int, int> stepIncrease, Board board)
+        public bool OpposingPieceInSquare(Square newSquare, Board board)
         {
-            var piece = board.GetPiece(new Square(currentSquare.Row + stepIncrease.Item1,
-                currentSquare.Col + stepIncrease.Item2));
-            if (piece != null) { return piece.Player != board.CurrentPlayer;}
+            var piece = board.GetPiece(newSquare);
+            if (piece != null)
+            {
+                return piece.Player != Player;
 
-            return false;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

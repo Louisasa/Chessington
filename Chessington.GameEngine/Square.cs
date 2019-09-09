@@ -1,4 +1,6 @@
-﻿namespace Chessington.GameEngine
+﻿using System;
+
+namespace Chessington.GameEngine
 {
     public struct Square
     {
@@ -48,6 +50,11 @@
         public override string ToString()
         {
             return string.Format("Row {0}, Col {1}", Row, Col);
+        }
+
+        public static Square operator +(Square left, StepIncrease right)
+        {
+            return new Square(left.Row + right.RowIncrease, left.Col + right.ColIncrease);
         }
     }
 }

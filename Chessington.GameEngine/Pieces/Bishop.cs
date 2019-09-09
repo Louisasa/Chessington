@@ -9,18 +9,20 @@ namespace Chessington.GameEngine.Pieces
         public Bishop(Player player)
             : base(player)
         {
-            this.PieceName = "bishop";
         }
+
+        protected List<StepIncrease> Directions { get; } = new List<StepIncrease>
+        {
+            new StepIncrease(1, 1),
+            new StepIncrease(-1, 1),
+            new StepIncrease(1, -1),
+            new StepIncrease(-1, -1)
+        };
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
             var currentSquare = board.FindPiece(this);
-            var availableMoves = MultipleMovesInOneDirection(currentSquare, new Tuple<int, int>(1, 1), board);
-            availableMoves = availableMoves.Concat(MultipleMovesInOneDirection(currentSquare, new Tuple<int, int>(-1, 1), board)).ToList();
-            availableMoves = availableMoves.Concat(MultipleMovesInOneDirection(currentSquare, new Tuple<int, int>(1, -1), board)).ToList();
-            availableMoves = availableMoves.Concat(MultipleMovesInOneDirection(currentSquare, new Tuple<int, int>(-1, -1), board)).ToList();
-
-            return availableMoves;
+            return Directions.SelectMany(direction => MultipleMovesInOneDirection(currentSquare, direction, board));
         }
     }
 }
