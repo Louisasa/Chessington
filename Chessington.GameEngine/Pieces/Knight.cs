@@ -37,7 +37,7 @@ namespace Chessington.GameEngine.Pieces
         private List<Square> CheckAndGetAvailableMove(Square currentSquare, Tuple<int, int> moveTuple, Board board)
         {
             var resultList = new List<Square>();
-            if (IsMoveInGameBoardRange(currentSquare, moveTuple) && SquareEmptyOrOpposingPieceInSquare(currentSquare, moveTuple, board))
+            if (IsMoveInGameBoardRange(currentSquare, moveTuple) && (SquareEmpty(currentSquare, moveTuple, board) || OpposingPieceInSquare(currentSquare, moveTuple, board)))
             {
                 resultList.Add(OneMove(currentSquare, moveTuple));
             }

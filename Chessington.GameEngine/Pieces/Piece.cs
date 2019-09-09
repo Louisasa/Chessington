@@ -36,13 +36,13 @@ namespace Chessington.GameEngine.Pieces
 
             var rowSteps = stepIncrease.Item1;
             var colSteps = stepIncrease.Item2;
-            while (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>( rowSteps, colSteps)) && SquareEmptyOrOpposingPieceInSquare(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board ))
+            while (IsMoveInGameBoardRange(currentSquare, new Tuple<int, int>(rowSteps, colSteps)) &&
+                   (SquareEmpty(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board) ||
+                    OpposingPieceInSquare(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board)))
             {
                 var oneMoveResult = this.OneMove(currentSquare, new Tuple<int, int>(rowSteps, colSteps));
                 resultList.Add(oneMoveResult);
-                var piece = board.GetPiece(new Square(currentSquare.Row + rowSteps,
-                    currentSquare.Col + colSteps));
-                if (piece != null)
+                if (OpposingPieceInSquare(currentSquare, new Tuple<int, int>(rowSteps, colSteps), board ))
                 {
                     break;
                 }
@@ -60,11 +60,20 @@ namespace Chessington.GameEngine.Pieces
                    currentSquare.Col + stepIncrease.Item2 < GameSettings.BoardSize && currentSquare.Col + stepIncrease.Item2 >= 0;
         }
 
-        public static bool SquareEmptyOrOpposingPieceInSquare(Square currentSquare, Tuple<int, int> stepIncrease, Board board)
+        public static bool SquareEmpty(Square currentSquare, Tuple<int, int> stepIncrease, Board board)
         {
             var piece = board.GetPiece(new Square(currentSquare.Row + stepIncrease.Item1,
                 currentSquare.Col + stepIncrease.Item2));
-            return piece == null || piece.Player != board.CurrentPlayer;
+            return piece == null;
+        }
+
+        public static bool OpposingPieceInSquare(Square currentSquare, Tuple<int, int> stepIncrease, Board board)
+        {
+            var piece = board.GetPiece(new Square(currentSquare.Row + stepIncrease.Item1,
+                currentSquare.Col + stepIncrease.Item2));
+            if (piece != null) { return piece.Player != board.CurrentPlayer;}
+
+            return false;
         }
     }
 }
