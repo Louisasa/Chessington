@@ -116,5 +116,18 @@ namespace Chessington.GameEngine.Tests.Pieces
             var moves = queen.GetAvailableMoves(board);
             moves.Should().NotContain(Square.At(4, 6));
         }
+
+        [Test]
+        public void Queen_CallCheckIfOpposingKingInRange()
+        {
+            var board = new Board();
+            var queen = new Queen(Player.White);
+            board.AddPiece(Square.At(4, 4), queen);
+            var king = new King(Player.Black);
+            board.AddPiece(Square.At(4, 5), king);
+
+            var moves = queen.GetAvailableMoves(board);
+            moves.Should().Contain(Square.At(4, 5));
+        }
     }
 }

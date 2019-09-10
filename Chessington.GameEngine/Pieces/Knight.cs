@@ -32,7 +32,7 @@ namespace Chessington.GameEngine.Pieces
         private IEnumerable<Square> CheckAndGetAvailableMove(Square currentSquare, StepIncrease stepIncrease, Board board)
         {
             var resultList = new List<Square>();
-            if (IsMoveInGameBoardRange(currentSquare + stepIncrease) && (SquareEmpty(currentSquare + stepIncrease, board) || OpposingPieceInSquare(currentSquare + stepIncrease, board)))
+            if (board.IsMoveInGameBoardRange(currentSquare + stepIncrease) && (board.SquareEmpty(currentSquare + stepIncrease) || OpposingPieceInSquare(currentSquare + stepIncrease, board)))
             {
                 resultList.Add(currentSquare + stepIncrease);
             }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Chessington.GameEngine.Pieces
 {
-    public class Queen : Piece
+    public class Queen : MoveType
     {
         public Queen(Player player)
             : base(player)

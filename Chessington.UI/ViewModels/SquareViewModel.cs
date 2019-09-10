@@ -20,6 +20,7 @@ namespace Chessington.UI.ViewModels
 
         private bool selected;
         private bool validMovementTarget;
+        private bool checkKing;
         private BitmapImage image;
 
         public SquareViewModel(Square square)
@@ -46,6 +47,18 @@ namespace Chessington.UI.ViewModels
         public bool ValidMovementTarget
         {
             get { return validMovementTarget; }
+            set
+            {
+                if (value.Equals(validMovementTarget)) return;
+                validMovementTarget = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Self");
+            }
+        }
+
+        public bool CheckKingTarget
+        {
+            get { return checkKing; }
             set
             {
                 if (value.Equals(validMovementTarget)) return;

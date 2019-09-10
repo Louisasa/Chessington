@@ -4,12 +4,11 @@ using System.Linq;
 
 namespace Chessington.GameEngine.Pieces
 {
-    public class Rook : Piece
+    public class Rook : MoveType
     {
         public Rook(Player player)
             : base(player)
-        {
-        }
+        {}
 
         protected List<StepIncrease> Directions { get; } = new List<StepIncrease>
         {

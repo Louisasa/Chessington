@@ -76,5 +76,18 @@ namespace Chessington.GameEngine.Tests.Pieces
             var moves = king.GetAvailableMoves(board);
             moves.Should().NotContain(Square.At(4, 5));
         }
+
+        [Test]
+        public void Kings_CannotMoveIntoCheck()
+        {
+            var board = new Board();
+            var king1 = new King(Player.White);
+            board.AddPiece(Square.At(4, 4), king1);
+            var king2 = new King(Player.Black);
+            board.AddPiece(Square.At(6, 4), king2);
+
+            var moves = king1.GetAvailableMoves(board);
+            moves.Should().NotContain(Square.At(5, 4));
+        }
     }
 }

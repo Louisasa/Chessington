@@ -81,16 +81,16 @@ namespace Chessington.GameEngine.Pieces
             var resultList = new List<Square>();
             var moveOne = OneStepDirections();
 
-            if (IsMoveInGameBoardRange(currentSquare + moveOne) &&
-                SquareEmpty(currentSquare + moveOne, board))
+            if (board.IsMoveInGameBoardRange(currentSquare + moveOne) &&
+                board.SquareEmpty(currentSquare + moveOne))
             {
                 resultList.Add(currentSquare + moveOne);
 
                 if (!this.MovedBefore)
                 {
                     var moveTwo = TwoStepDirections();
-                    if(IsMoveInGameBoardRange(currentSquare + moveTwo) &&
-                      SquareEmpty(currentSquare + moveTwo, board))
+                    if(board.IsMoveInGameBoardRange(currentSquare + moveTwo) &&
+                       board.SquareEmpty(currentSquare + moveTwo))
                     {
                         resultList.Add(currentSquare + moveTwo);
                     }
@@ -100,7 +100,7 @@ namespace Chessington.GameEngine.Pieces
             var toTakeMoves = OpposingPieceDirections();
             foreach (var direction in toTakeMoves)
             {
-                if (IsMoveInGameBoardRange(currentSquare + direction) &&
+                if (board.IsMoveInGameBoardRange(currentSquare + direction) &&
                     OpposingPieceInSquare(currentSquare + direction, board))
                 {
                     resultList.Add(currentSquare + direction);

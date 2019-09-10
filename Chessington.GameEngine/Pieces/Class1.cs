@@ -6,41 +6,33 @@ using System.Threading.Tasks;
 
 namespace Chessington.GameEngine.Pieces
 {
-    abstract class MoveType
+    public abstract class MoveType : Piece
     {
+        protected MoveType(Player player) : base(player) { }
         public List<Square> MultipleMovesInOneDirection(Square currentSquare, StepIncrease stepIncrease, Board board)
         {
             var resultList = new List<Square>();
             Square newSquare = currentSquare + stepIncrease;
 
             while (board.IsMoveInGameBoardRange(newSquare) &&
-                   (board.SquareEmpty(newSquare) /*||
-                    OpposingPieceInSquare(newSquare, board)*/))
+                   (board.SquareEmpty(newSquare) ||
+                    OpposingPieceInSquare(newSquare, board)))
             {
                 resultList.Add(newSquare);
-                /*if (OpposingPieceInSquare(newSquare, board))
+                if (OpposingPieceInSquare(newSquare, board))
                 {
+                    if (IsOpposingPieceKing(newSquare, board))
+                    {
+                        Console.WriteLine("CHECK");
+                    }
+
                     break;
-                }*/
+                }
 
                 newSquare += stepIncrease;
             }
 
             return resultList;
         }
-
-        /*public bool OpposingPieceInSquare(Square newSquare, Board board)
-        {
-            var piece = board.GetPiece(newSquare);
-            if (piece != null)
-            {
-                return piece.Player != Player;
-
-            }
-            else
-            {
-                return false;
-            }
-        }*/
     }
 }

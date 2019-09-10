@@ -25,25 +25,10 @@ namespace Chessington.GameEngine.Pieces
             board.MovePiece(currentSquare, newSquare);
         }
 
-        public List<Square> MultipleMovesInOneDirection(Square currentSquare, StepIncrease stepIncrease, Board board) 
+        public bool IsOpposingPieceKing(Square newSquare, Board board)
         {
-            var resultList = new List<Square>();
-            Square newSquare = currentSquare + stepIncrease;
-
-            while (board.IsMoveInGameBoardRange(newSquare) &&
-                   (board.SquareEmpty(newSquare) ||
-                    OpposingPieceInSquare(newSquare, board)))
-            {
-                resultList.Add(newSquare);
-                if (OpposingPieceInSquare(newSquare, board ))
-                {
-                    break;
-                }
-
-                newSquare +=  stepIncrease;
-            }
-
-            return resultList;
+            var piece = board.GetPiece(newSquare);
+            return piece.GetType() == typeof(King);
         }
 
         public bool OpposingPieceInSquare(Square newSquare, Board board)

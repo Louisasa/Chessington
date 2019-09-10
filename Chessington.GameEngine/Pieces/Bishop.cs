@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Chessington.GameEngine.Pieces
 {
-    public class Bishop : Piece
+    public class Bishop : MoveType
     {
         public Bishop(Player player)
             : base(player)
