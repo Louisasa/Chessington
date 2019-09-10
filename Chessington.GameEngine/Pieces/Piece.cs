@@ -30,8 +30,8 @@ namespace Chessington.GameEngine.Pieces
             var resultList = new List<Square>();
             Square newSquare = currentSquare + stepIncrease;
 
-            while (IsMoveInGameBoardRange(newSquare) &&
-                   (SquareEmpty(newSquare, board) ||
+            while (board.IsMoveInGameBoardRange(newSquare) &&
+                   (board.SquareEmpty(newSquare) ||
                     OpposingPieceInSquare(newSquare, board)))
             {
                 resultList.Add(newSquare);
@@ -44,18 +44,6 @@ namespace Chessington.GameEngine.Pieces
             }
 
             return resultList;
-        }
-
-        public static bool IsMoveInGameBoardRange(Square newSquare)
-        {
-            return newSquare.Row < GameSettings.BoardSize && newSquare.Row >= 0 &&
-                   newSquare.Col < GameSettings.BoardSize && newSquare.Col >= 0;
-        }
-
-        public static bool SquareEmpty(Square newSquare, Board board)
-        {
-            var piece = board.GetPiece(newSquare);
-            return piece == null;
         }
 
         public bool OpposingPieceInSquare(Square newSquare, Board board)

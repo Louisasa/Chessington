@@ -84,5 +84,17 @@ namespace Chessington.GameEngine
             var handler = CurrentPlayerChanged;
             if (handler != null) handler(player);
         }
+
+        public bool IsMoveInGameBoardRange(Square newSquare)
+        {
+            return newSquare.Row < GameSettings.BoardSize && newSquare.Row >= 0 &&
+                   newSquare.Col < GameSettings.BoardSize && newSquare.Col >= 0;
+        }
+
+        public bool SquareEmpty(Square newSquare)
+        {
+            var piece = this.GetPiece(newSquare);
+            return piece == null;
+        }
     }
 }
